@@ -1,16 +1,10 @@
 import { Express } from "express";
-import mongooseConnect from "../databases/mongodb/mongodb";
-import typeORMConnect from "../databases/postgresql/typeorm";
+import mongooseConnect from "../database/mongodb";
 
 const appSetup = async (app: Express) => {
   try {
     // set database connections
-    await Promise.all([
-      // typeORMConnect(),
-      mongooseConnect(),
-    ]);
-
-    console.log("Databases connected successfully!");
+    await mongooseConnect(), console.log("Databases connected successfully!");
     const APP_PORT = 3000;
 
     app.listen(APP_PORT, () => {
