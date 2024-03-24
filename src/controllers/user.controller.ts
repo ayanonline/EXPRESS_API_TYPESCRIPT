@@ -9,6 +9,7 @@ import {
 
 import { IHTTPError } from "../shared/extensions/errors.extension";
 import * as userService from "../services/user.service";
+import asyncHanlder from "express-async-handler";
 
 const controller = Router();
 
@@ -16,26 +17,19 @@ controller
   .post(
     "/",
     createUserValidator,
-    async (req: Request, res: Response, next: NextFunction) => {
-      try {
-        const newUser = await userService.createUser(req.body);
-        res.status(201).send(newUser);
-      } catch (ex) {
-        next(ex);
-      }
-    }
+    asyncHanlder(async (req: Request, res: Response, next: NextFunction) => {
+      const newUser = await userService.createUser(req.body);
+      res.status(201).send(newUser);
+    })
   )
 
-  .get("/", async (req: Request, res: Response) => {
-    try {
+  .get(
+    "/",
+    asyncHanlder(async (req: Request, res: Response) => {
       const users = await userService.retrieveUsers();
       res.send(users);
-    } catch (ex: unknown) {
-      const err = ex as IHTTPError;
-      const statusCode = err.statusCode || 500;
-      res.status(statusCode).send({ message: err.message });
-    }
-  })
+    })
+  )
 
   .get("/:id", getUserByIdValidator, async (req: Request, res: Response) => {
     try {

@@ -5,6 +5,10 @@ import {
   updateUserValidationSchema,
   getUserIdValidationSchema,
 } from "../validators/user.validator";
+import { BadRequestException } from "../exceptions/http.exceptions";
+import to from "await-to-js";
+import { IHTTPError } from "../extensions/errors.extension";
+import asyncHanlder from "express-async-handler";
 
 export const createUserValidator = async (
   req: Request,
@@ -72,22 +76,18 @@ export const changePasswordValidator = async (
   }
 };
 
-export const getUserByIdValidator = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
+export const getUserByIdValidator = asyncHanlder(
+  async (req: Request, res: Response, next: NextFunction) => {
     if (!req.params?.id) {
-      return res
-        .status(400)
-        .send({ message: 'Required parameter "id" is missing!' });
+      throw new BadRequestException('Required parameter "id" is missing!');
     }
 
-    await getUserIdValidationSchema.validateAsync(req.params);
+    const [error] = await to(
+      getUserIdValidationSchema.validateAsync(req.params)
+    );
+
+    if (error) throw new BadRequestException(error.message);
 
     next();
-  } catch (e: any) {
-    res.status(400).send({ message: e.message });
   }
-};
+);
