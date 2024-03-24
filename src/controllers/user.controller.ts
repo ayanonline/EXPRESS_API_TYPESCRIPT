@@ -11,9 +11,9 @@ import { IHTTPError } from "../shared/extensions/errors.extension";
 import * as userService from "../services/user.service";
 import asyncHanlder from "express-async-handler";
 
-const controller = Router();
+const userController = Router();
 
-controller
+userController
   .post(
     "/",
     createUserValidator,
@@ -119,4 +119,4 @@ controller
     }
   );
 
-export default controller;
+export default userController;
