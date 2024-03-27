@@ -1,18 +1,24 @@
 import { Express, Request, Response } from "express";
 import userRouter from "../controllers/user.controller";
-import { exceptionHandler } from "../shared/middlewares/exception-handling.middleware";
-import { pageNotFoundExceptionHandler } from "../shared/middlewares/page-not-found-exception-handler.middleware";
+import { errorHandler } from "../middlewares/error-handling/error-handling.middleware";
+import { pageNotFoundErrorHandler } from "../middlewares/error-handling/page-not-found-handler.middleware";
 
-const routerSetup = (app: Express) =>
-  app
-    .get("/", async (req: Request, res: Response) => {
-      res.send("Hello Express APIvantage!");
-    })
-    .use("/api/v1/users", userRouter)
+const routerSetup = (app: Express) => {
+  //Home Route
+  app.get("/", async (req: Request, res: Response) => {
+    res.send("Hello Express APIvantage!");
+  });
 
-    .use("*", pageNotFoundExceptionHandler) // <---- 404 page handler
+  // User Route
+  app.use("/api/v1/users", userRouter);
 
-    // ----> error-handling middleware <----
-    .use(exceptionHandler); // The exception handling middleware is the last one in the pipeline
+  // ----> 404 page handler <----
+  app.use("*", pageNotFoundErrorHandler);
+
+  // ----> error-handling middleware <----
+  app.use(errorHandler);
+
+  return app;
+};
 
 export default routerSetup;

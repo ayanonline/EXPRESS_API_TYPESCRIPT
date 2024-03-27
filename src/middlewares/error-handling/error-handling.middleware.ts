@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from "express";
-import { IHTTPError } from "../extensions/errors.extension";
-import { ErrorMessages } from "../enums/messages/error-messages.enum";
+import { IHTTPError } from "../../shared/extensions/errors.extension";
+import { ErrorMessages } from "../../shared/enums/messages/error-messages.enum";
 
-export const exceptionHandler = (
+export const errorHandler = (
   error: IHTTPError,
   req: Request,
   res: Response,

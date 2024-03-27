@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
-import { NotFoundException } from "../exceptions/http.exceptions";
+import { NotFoundException } from "../../shared/exceptions/http.exceptions";
 
-export const pageNotFoundExceptionHandler = (
+export const pageNotFoundErrorHandler = (
   _req: Request,
   _res: Response,
   _next: NextFunction

@@ -1,15 +1,15 @@
 import { Router, Request, Response, NextFunction } from "express";
 import { IUser } from "../database/model/user.model";
 import UserModel from "../database/schema/user.schema";
-import {
-  changePasswordValidator,
-  createUserValidator,
-  getUserByIdValidator,
-} from "../shared/middlewares/user-validator.middleware";
 
 import { IHTTPError } from "../shared/extensions/errors.extension";
 import * as userService from "../services/user.service";
 import asyncHanlder from "express-async-handler";
+import {
+  changePasswordValidator,
+  createUserValidator,
+  getUserByIdValidator,
+} from "../middlewares/user/user-validator.middleware";
 
 const userController = Router();
 

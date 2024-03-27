@@ -1,14 +1,15 @@
 import { Request, Response, NextFunction } from "express";
+
+import to from "await-to-js";
+
+import asyncHanlder from "express-async-handler";
 import {
   changePasswordValidationSchema,
   createUserValidationSchema,
-  updateUserValidationSchema,
   getUserIdValidationSchema,
-} from "../validators/user.validator";
-import { BadRequestException } from "../exceptions/http.exceptions";
-import to from "await-to-js";
-import { IHTTPError } from "../extensions/errors.extension";
-import asyncHanlder from "express-async-handler";
+  updateUserValidationSchema,
+} from "../../shared/validators/user.validator";
+import { BadRequestException } from "../../shared/exceptions/http.exceptions";
 
 export const createUserValidator = async (
   req: Request,
